@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace _25.Core.System
 {
@@ -9,8 +10,8 @@ namespace _25.Core.System
         [Required]
         public string Who { get; set; }
         [Required]
-        private string What { get; set; }
+        public string What { get; set; }
         [Required]
-        private string When { get; set; }
+        public DateTime When { get; set; }
     }
 }
