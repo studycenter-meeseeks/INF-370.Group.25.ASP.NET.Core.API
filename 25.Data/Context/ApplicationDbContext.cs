@@ -1,4 +1,5 @@
-﻿using _25.Core.User;
+﻿using _25.Core.System;
+using _25.Core.User;
 using _25.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,6 @@ namespace _25.Data.Context
     
 
         //User DbSets
-
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeType> EmployeeTypes { get; set; }
         public DbSet<EmployeePhysicalAddress> EmployeePhysicalAddresses { get; set; }
@@ -28,6 +28,9 @@ namespace _25.Data.Context
         public DbSet<LevelOfEducation> LevelOfEducations { get; set; }
         public DbSet<LegalGuardian> LegalGuardians { get; set; }
         public DbSet<NextOfKin> NextOfKins { get; set; }
+
+        //System
+        public DbSet<AuditLog> AuditLogs { get; set; }
      
     }
 }
