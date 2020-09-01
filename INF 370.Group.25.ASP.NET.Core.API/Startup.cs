@@ -32,16 +32,6 @@ namespace INF_370.Group._25.ASP.NET.Core.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // ===== Configure Identity ========
-            services.AddDbContext<ApplicationDbContext>();
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-                {
-                    options.SignIn.RequireConfirmedEmail = true;
-                    options.User.RequireUniqueEmail = true;
-                })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
             // ===== Enable Cors ========
             services.AddCors(options =>
             {
@@ -54,6 +44,18 @@ namespace INF_370.Group._25.ASP.NET.Core.API
                             .AllowCredentials();
                     });
             });
+
+            // ===== Configure Identity ========
+            services.AddDbContext<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = true;
+                    options.User.RequireUniqueEmail = true;
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+
 
             // ===== Add Jwt Authentication ========
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -74,7 +76,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API
                         ValidIssuer = Configuration["JwtIssuer"],
                         ValidAudience = Configuration["JwtIssuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
-                        ClockSkew = TimeSpan.Zero,
+                        ClockSkew = TimeSpan.Zero
 
                     };
                 });
