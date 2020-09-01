@@ -6,13 +6,23 @@ namespace _25.Core.User
     {
         [Key]
         public int EmployeeId { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Surname { get; set; }
+        [Required]
         public string IdNumber { get; set; }
-        public PhysicalAddress PhysicalAddress { get; set; }
+        [Required]
+
+        public virtual EmployeePhysicalAddress PhysicalAddress { get; set; }
 
         public virtual EmployeeType EmployeeType { get; set; }
         public int EmployeeTypeId { get; set; }
+
+        public virtual Gender Gender { get; set; }
+        public int GenderId { get; set; }
+        public virtual Title Title { get; set; }
+        public int TitleId { get; set; }
 
     }
 }

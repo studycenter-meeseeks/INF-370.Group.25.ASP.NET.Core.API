@@ -10,6 +10,7 @@ namespace _25.Core.User
     {
         [Key]
         public int EmployeeTypeId { get; set; }
+        [Required]
         public string Description { get; set; }
 
         public List<Employee> Employees { get; set; }
