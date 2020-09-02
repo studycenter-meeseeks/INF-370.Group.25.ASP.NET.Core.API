@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using _25.Core.Payments;
 using Microsoft.VisualBasic;
 
 namespace _25.Core.User
@@ -45,6 +47,13 @@ namespace _25.Core.User
 
         public virtual Title Title { get; set; }
         public int TitleId { get; set; }
+
+        public virtual List<MedicalAid> MedicalAids { get; set; }
+
+        public Patient()
+        {
+            MedicalAids = new List<MedicalAid>();
+        }
 
     }
 }
