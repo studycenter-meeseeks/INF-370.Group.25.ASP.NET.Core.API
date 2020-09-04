@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _25.Data.Context;
 
 namespace _25.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200904124925_addNumberToPatient")]
+    partial class addNumberToPatient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,10 +217,7 @@ namespace _25.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Operation")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OperationDescription")
+                    b.Property<string>("What")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -232,67 +231,6 @@ namespace _25.Data.Migrations
                     b.HasKey("AuditLogId");
 
                     b.ToTable("AuditLogs");
-                });
-
-            modelBuilder.Entity("_25.Core.System.Operation", b =>
-                {
-                    b.Property<int>("OperationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("HasPermission")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SubSystemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OperationId");
-
-                    b.HasIndex("SubSystemId");
-
-                    b.ToTable("Operations");
-                });
-
-            modelBuilder.Entity("_25.Core.System.SubSystem", b =>
-                {
-                    b.Property<int>("SubSystemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SystemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SubSystemId");
-
-                    b.HasIndex("SystemId");
-
-                    b.ToTable("SubSystems");
-                });
-
-            modelBuilder.Entity("_25.Core.System.System", b =>
-                {
-                    b.Property<int>("SystemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SystemId");
-
-                    b.ToTable("Systems");
                 });
 
             modelBuilder.Entity("_25.Core.User.Employee", b =>
@@ -652,20 +590,6 @@ namespace _25.Data.Migrations
                     b.HasOne("_25.Core.Payments.MedicalAid", null)
                         .WithMany("DependentMembers")
                         .HasForeignKey("MedicalAidId");
-                });
-
-            modelBuilder.Entity("_25.Core.System.Operation", b =>
-                {
-                    b.HasOne("_25.Core.System.SubSystem", null)
-                        .WithMany("Operations")
-                        .HasForeignKey("SubSystemId");
-                });
-
-            modelBuilder.Entity("_25.Core.System.SubSystem", b =>
-                {
-                    b.HasOne("_25.Core.System.System", null)
-                        .WithMany("SubSystems")
-                        .HasForeignKey("SystemId");
                 });
 
             modelBuilder.Entity("_25.Core.User.Employee", b =>

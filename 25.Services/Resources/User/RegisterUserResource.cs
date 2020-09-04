@@ -13,7 +13,7 @@ namespace _25.Services.Resources.User
         [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid Email Format")]
         public string Email { get; set; }
         [Required]
-        public string Cellphone { get; set; }
+        public string ContactNumber { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

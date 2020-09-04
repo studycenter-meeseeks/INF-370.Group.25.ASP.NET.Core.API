@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using _25.Communication;
 using _25.Data.Context;
 using _25.Data.Entities;
 using _25.Services.Resources.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,19 +16,22 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountController(
             ApplicationDbContext dbContext,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager
             )
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpPost("Patient/SignUp")]
         [AllowAnonymous]
-        public async Task<ActionResult> RegisterUser([FromBody] RegisterUserResource model)
+        public async Task<ActionResult> RegisterPatient([FromBody] RegisterUserResource model)
         {
             var message = "";
             if (ModelState.IsValid)
@@ -45,7 +44,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
                     return BadRequest(new { message });
                 }
 
-                var patientWithContactNumberExists = _dbContext.Patients.Any(item => item.ContactNumber.Equals(model.Cellphone));
+                var patientWithContactNumberExists = _dbContext.Patients.Any(item => item.ContactNumber.Equals(model.ContactNumber));
 
                 if (patientWithContactNumberExists)
                 {
@@ -53,7 +52,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
                     return BadRequest(new { message });
                 }
 
-                var employeeWithContactNumberExists = _dbContext.Employees.Any(item => item.ContactNumber.Equals(model.Cellphone));
+                var employeeWithContactNumberExists = _dbContext.Employees.Any(item => item.ContactNumber.Equals(model.ContactNumber));
 
                 if (employeeWithContactNumberExists)
                 {
@@ -65,7 +64,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    PhoneNumber = model.Cellphone,
+                    PhoneNumber = model.ContactNumber,
                 };
 
                 var result = await _userManager.CreateAsync(newUser, model.Password);
@@ -92,5 +91,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
             return BadRequest(new { message });
 
         }
+
+       
     }
 }

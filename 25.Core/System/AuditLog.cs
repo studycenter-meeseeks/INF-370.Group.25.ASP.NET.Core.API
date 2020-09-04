@@ -10,8 +10,19 @@ namespace _25.Core.System
         [Required]
         public string Who { get; set; }
         [Required]
-        public string What { get; set; }
+        public SupportedLogOperation Operation { get; set; }
+
+        [Required]
+        public  string OperationDescription { get; set; }
         [Required]
         public DateTime When { get; set; }
+    }
+
+    public enum SupportedLogOperation
+    {
+        Create,
+        Read,
+        Update,
+        Delete
     }
 }

@@ -14,8 +14,7 @@ namespace _25.Data.Context
             base.OnConfiguring(optionsBuilder);
         }
 
-    
-
+        
         //User DbSets
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeType> EmployeeTypes { get; set; }
@@ -31,6 +30,9 @@ namespace _25.Data.Context
 
         //System
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<Core.System.System> Systems { get; set; }
+        public DbSet<SubSystem> SubSystems { get; set; }
+        public DbSet<Operation> Operations { get; set; }
      
     }
 }
