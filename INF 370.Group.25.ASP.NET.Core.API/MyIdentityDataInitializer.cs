@@ -22,6 +22,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API
                 {
                     UserName = "super@calenipractice.co.za",
                     Email = "super@calenipractice.co.za",
+                    IsActive = true
                 };
 
                 var result = userManager.CreateAsync(user, "Caleni12345!").Result;
