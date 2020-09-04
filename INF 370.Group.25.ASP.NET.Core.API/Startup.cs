@@ -81,17 +81,23 @@ namespace INF_370.Group._25.ASP.NET.Core.API
                     };
                 });
 
+
             services.AddMvc();
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseCors();
             app.UseStaticFiles();
             app.UseHttpsRedirection();
@@ -100,10 +106,16 @@ namespace INF_370.Group._25.ASP.NET.Core.API
 
             app.UseAuthorization();
             app.UseAuthentication();
+
+            MyIdentityDataInitializer.SeedData(userManager, roleManager);
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
+
+  
     }
 }

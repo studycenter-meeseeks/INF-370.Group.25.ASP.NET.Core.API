@@ -11,9 +11,14 @@ namespace _25.Core.User
         [Required]
         public string Surname { get; set; }
         [Required]
+        public string EmployeeNumber { get; set; }
+        [Required]
         public string IdNumber { get; set; }
         [Required]
-
+        public string ContactNumber { get; set; }
+        [Required]
+        public string EmailAddress { get; set; }
+        [Required]
         public virtual EmployeePhysicalAddress PhysicalAddress { get; set; }
 
         public virtual EmployeeType EmployeeType { get; set; }

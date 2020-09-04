@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\25.Communication\25.Communication.csproj" />
     <ProjectReference Include="..\25.Core\25.Core.csproj" />
     <ProjectReference Include="..\25.Data\25.Data.csproj" />

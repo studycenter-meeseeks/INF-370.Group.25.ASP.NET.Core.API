@@ -21,6 +21,9 @@ namespace _25.Core.User
 
         [Required]
         public string ContactNumber { get; set; }
+
+        [Required] 
+        public string EmailAddress { get; set; }
         //optional
         public string ContactNumberWork { get; set; }
         //optional
