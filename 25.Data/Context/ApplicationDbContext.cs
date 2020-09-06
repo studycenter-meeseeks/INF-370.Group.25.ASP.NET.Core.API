@@ -36,6 +36,9 @@ namespace _25.Data.Context
         public DbSet<Core.System.System> Systems { get; set; }
         public DbSet<SubSystem> SubSystems { get; set; }
         public DbSet<Operation> Operations { get; set; }
+
+        public DbSet<Centre> Centres { get; set; }
+        public DbSet<CentreAddress> CentreAddresses { get; set; }
      
     }
 }

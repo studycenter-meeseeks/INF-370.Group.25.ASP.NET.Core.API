@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using _25.Core.System;
 
 namespace _25.Core.User
 {
@@ -28,6 +29,9 @@ namespace _25.Core.User
         public int GenderId { get; set; }
         public virtual Title Title { get; set; }
         public int TitleId { get; set; }
+
+        public virtual Centre Centre { get; set; }
+        public int CentreId { get; set; }
 
     }
 }

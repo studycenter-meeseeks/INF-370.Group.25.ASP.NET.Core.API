@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using _25.Core.System;
 
 namespace _25.Core.User
 {
@@ -23,6 +24,13 @@ namespace _25.Core.User
         public string CellContactNumber { get; set; }
         [Required]
         public string EmailAddress { get; set; }
+
+        public virtual Centre Centre { get; set; }
+        public int CentreId { get; set; }
+        public virtual Gender Gender { get; set; }
+        public int GenderId { get; set; }
+        public virtual Title Title { get; set; }
+        public int TitleId { get; set; }
 
         public virtual List<PsychologistQualification> Qualifications { get; set; }
         public virtual List<PsychologistService> Services { get; set; }
