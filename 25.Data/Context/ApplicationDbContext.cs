@@ -27,6 +27,9 @@ namespace _25.Data.Context
         public DbSet<LevelOfEducation> LevelOfEducations { get; set; }
         public DbSet<LegalGuardian> LegalGuardians { get; set; }
         public DbSet<NextOfKin> NextOfKins { get; set; }
+        public DbSet<Psychologist> Psychologists { get; set; }
+        public DbSet<PsychologistQualification> PsychologistQualifications { get; set; }
+        public DbSet<PsychologistService> PsychologistServices { get; set; }
 
         //System
         public DbSet<AuditLog> AuditLogs { get; set; }
