@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using _25.Data.Context;
 using _25.Data.Entities;
+using _25.Services.Services.Implementations;
+using _25.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -84,6 +86,12 @@ namespace INF_370.Group._25.ASP.NET.Core.API
 
             services.AddMvc();
             services.AddControllers();
+
+
+            // ===== Link Business Services ========
+
+            services.AddScoped<IApplicationService, ApplicationService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,7 +115,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API
             app.UseAuthorization();
             app.UseAuthentication();
 
-            MyIdentityDataInitializer.SeedData(userManager, roleManager);
+            MyIdentityDataInitializer.SeedData(userManager, roleManager); //Add Super User on project startup
 
 
             app.UseEndpoints(endpoints =>

@@ -8,6 +8,5 @@ namespace _25.Core.System
         public int OperationId { get; set; }
         [Required]
         public string Name { get; set; }
-        public bool HasPermission { get; set; }
     }
 }

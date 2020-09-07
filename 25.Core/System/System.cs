@@ -11,11 +11,5 @@ namespace _25.Core.System
         [Required]
         public string Name { get; set; }
 
-        public virtual List<SubSystem> SubSystems { get; set; }
-
-        public System()
-        {
-            SubSystems = new List<SubSystem>();
-        }
     }
 }

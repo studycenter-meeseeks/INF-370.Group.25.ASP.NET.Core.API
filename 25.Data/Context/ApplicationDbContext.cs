@@ -39,6 +39,8 @@ namespace _25.Data.Context
 
         public DbSet<Centre> Centres { get; set; }
         public DbSet<CentreAddress> CentreAddresses { get; set; }
+
+        //Identity
      
     }
 }
