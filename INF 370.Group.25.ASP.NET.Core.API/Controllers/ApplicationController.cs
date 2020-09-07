@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using _25.Data.Context;
 using _25.Data.Entities;
 using _25.Services.Resources.Application;
-using _25.Services.Services.Implementations;
 using _25.Services.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
 {
@@ -23,50 +18,68 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IApplicationService _applicationService;
+        private readonly ApplicationDbContext _context;
 
         public ApplicationController(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IApplicationService applicationService
+            IApplicationService applicationService,
+            ApplicationDbContext context
         )
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _applicationService = applicationService;
+            _context = context;
         }
 
-        //[HttpGet("Roles")]
-        //public ActionResult<IEnumerable<RolePrivilegesResource>> GetRoles()
-        //{
+        [HttpGet("Roles")]
+        public async Task<ActionResult<IEnumerable<RolePrivilegesResource>>> GetRoles()
+        {
 
-        //    var roles = _roleManager.Roles
-        //        .Include(item => item.SubSystemPermissions)
-        //        .ThenInclude(subsystem => subsystem.Operations)
-        //        .Select(item => new RolePrivilegesResource
-        //        {
-        //            Id = item.Id,
-        //            RoleName = item.Name,
-        //            RoleDescription = item.Description,
-        //            Subsystems = item.SubSystemPermissions.Select(sub => new SubsystemResource
-        //            {
-        //                Id = sub.SubSystemId,
-        //                Name = sub.Name,
-        //                Privileges = sub.Operations.Select(operation => new OperationResource
-        //                {
-        //                    Id = operation.OperationId,
-        //                    Name = operation.Name,
-        //                    HasPermission = operation.HasPermission
+            var rolesFromDb = _roleManager.Roles.ToList();
+            var subSystemsFromDb = _context.SubSystems.ToList();
 
-        //                }).ToList()
+            var rolesAndPrivileges = new List<RolePrivilegesResource>();
+            var roleAndPrivileges = new RolePrivilegesResource();
 
-        //            }).ToList()
+            foreach (var role in rolesFromDb)
+            {
+                var roleClaims = await _roleManager.GetClaimsAsync(role);
 
-        //        })
-        //        .ToList();
+                roleAndPrivileges.RoleName = role.Name;
 
-        //    return roles;
+                foreach (var currentSubSystem in subSystemsFromDb)
+                {
+                    var subSystem = new SubSystemResource
+                    {
+                        Id = currentSubSystem.SubSystemId,
+                        Name = currentSubSystem.Name
+                    };
 
-        //}
+
+                    foreach (var claim in roleClaims) //All Role Claims
+                    {
+                        
+                        if (!currentSubSystem.Name.ToLower().Equals(claim.Type.ToLower())) continue;
+
+                        var privilege = new PrivilegeResource {Name = claim.Value};
+                        subSystem.Privileges.Add(privilege);
+                    }
+
+                    roleAndPrivileges.Subsystems.Add(subSystem);
+                }
+
+
+                rolesAndPrivileges.Add(roleAndPrivileges);
+
+            }
+
+
+            return rolesAndPrivileges;
+
+
+        }
 
         [HttpPost("Roles/Create")]
         public async Task<IActionResult> AddRole(AddRoleAndPrivilegesResource model)
