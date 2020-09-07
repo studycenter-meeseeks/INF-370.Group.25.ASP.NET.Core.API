@@ -14,7 +14,6 @@ namespace _25.Services.Resources.Application
     {
         public string SubSystem { get; set; }
         public string Operation { get; set; }
-        public string Value { get; set; }
 
     }
 }

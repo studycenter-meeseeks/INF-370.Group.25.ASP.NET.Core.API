@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using _25.Core.System;
 using _25.Data.Context;
 using _25.Data.Entities;
 using _25.Services.Resources.Application;
@@ -60,10 +61,10 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
 
                     foreach (var claim in roleClaims) //All Role Claims
                     {
-                        
+
                         if (!currentSubSystem.Name.ToLower().Equals(claim.Type.ToLower())) continue;
 
-                        var privilege = new PrivilegeResource {Name = claim.Value};
+                        var privilege = new PrivilegeResource { Name = claim.Value };
                         subSystem.Privileges.Add(privilege);
                     }
 
@@ -95,11 +96,33 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
                 await _roleManager.CreateAsync(newRole);
                 var role = await _roleManager.FindByNameAsync(newRole.Name);
 
-                foreach (var privilege in model.Privileges)
+                var subSystems = _context.SubSystems.ToList();
+                var operations = _context.Operations.ToList();
+                //Data cleaning
+                foreach (var subSystem in subSystems) //User
                 {
-                    // Bad memory management, please change when possible
-                    var claim = new Claim(privilege.SubSystem, privilege.Operation + "-" + privilege.Value);
-                    await _roleManager.AddClaimAsync(role, claim);
+                    foreach (var privilege in model.Privileges)
+                    {
+                        if (privilege.SubSystem.ToLower().Equals(subSystem.Name))
+                        {
+                            foreach (var operation in operations)
+                            {
+                                if (privilege.Operation.ToLower().Equals(operation.Name))
+                                {
+                                    //Selected
+                                    var claim = new Claim(privilege.SubSystem, privilege.Operation + "-" + "True");
+                                    await _roleManager.AddClaimAsync(role, claim);
+
+                                }
+                                else
+                                {
+                                    //Not Selected
+                                    var claim = new Claim(privilege.SubSystem, privilege.Operation + "-" + "False");
+                                    await _roleManager.AddClaimAsync(role, claim);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 return Ok();
