@@ -17,15 +17,26 @@ namespace _25.Services.Services.Implementations
         }
 
 
-        public List<GetSubSystemResource> GetAllSubSystems()
+        public List<GetGenericNameAndIdResource> GetAllSubSystems()
         {
-            var subSystems = _context.SubSystems.Select(item => new GetSubSystemResource
+            var subSystems = _context.SubSystems.Select(item => new GetGenericNameAndIdResource
             {
                 Id = item.SubSystemId,
-                SubSystem = item.Name
+                Name = item.Name
             }).AsNoTracking().ToList();
 
             return subSystems;
+        }
+
+        public List<GetGenericNameAndIdResource> GetAllOperations()
+        {
+            var operations = _context.Operations.Select(item => new GetGenericNameAndIdResource
+            {
+                Id = item.OperationId,
+                Name = item.Name
+            }).AsNoTracking().ToList();
+
+            return operations;
         }
     }
 }

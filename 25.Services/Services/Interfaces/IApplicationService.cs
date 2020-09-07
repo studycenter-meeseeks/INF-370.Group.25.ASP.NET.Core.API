@@ -5,6 +5,7 @@ namespace _25.Services.Services.Interfaces
 {
     public interface IApplicationService
     {
-         List<GetSubSystemResource> GetAllSubSystems();
+         List<GetGenericNameAndIdResource> GetAllSubSystems();
+         List<GetGenericNameAndIdResource> GetAllOperations();
     }
 }

@@ -33,7 +33,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
             _context = context;
         }
 
-        [HttpGet("Roles")]
+        [HttpGet("Roles/GetAll")]
         public async Task<ActionResult<IEnumerable<RolePrivilegesResource>>> GetRoles()
         {
 
@@ -109,9 +109,15 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
         }
 
         [HttpGet("SubSystems/GetAll")]
-        public ActionResult<IEnumerable<GetSubSystemResource>> GetSubSystems()
+        public ActionResult<IEnumerable<GetGenericNameAndIdResource>> GetSubSystems()
         {
             return _applicationService.GetAllSubSystems();
+        }
+
+        [HttpGet("Operations/GetAll")]
+        public ActionResult<IEnumerable<GetGenericNameAndIdResource>> GetOperations()
+        {
+            return _applicationService.GetAllOperations();
         }
 
 
