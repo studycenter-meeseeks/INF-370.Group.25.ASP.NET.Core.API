@@ -124,6 +124,6 @@ namespace INF_370.Group._25.ASP.NET.Core.API
             });
         }
 
-  
+
     }
 }

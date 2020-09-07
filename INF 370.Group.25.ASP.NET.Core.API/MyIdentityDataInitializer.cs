@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using _25.Data.Context;
 using _25.Data.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -13,38 +14,40 @@ namespace INF_370.Group._25.ASP.NET.Core.API
             RoleManager<IdentityRole> roleManager
             )
         {
-            SeedRoles(roleManager);
-            SeedUsers(userManager);
+            SeedRoles(roleManager).Wait();
+            SeedUsers(userManager).Wait();
         }
 
-        public static void SeedRoles(RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (!roleManager.RoleExistsAsync("SuperAdmin").Result)
+            var roleExist = await roleManager.RoleExistsAsync("SuperAdmin");
+            if (!roleExist)
             {
                 var role = new IdentityRole { Name = "SuperAdmin" };
-                var roleResult = roleManager.CreateAsync(role).Result;
+                var roleResult = await roleManager.CreateAsync(role);
 
                 var dbContext = new ApplicationDbContext();
                 var subSystems = dbContext.SubSystems.ToList();
                 var operations = dbContext.Operations.ToList();
 
-                var superAdminRole = roleManager.FindByNameAsync(role.Name).Result;
+                var superAdminRole = await roleManager.FindByNameAsync(role.Name);
 
                 foreach (var subSystem in subSystems)
                 {
                     foreach (var operation in operations)
                     {
                         // Bad memory management, please change when possible
-                        var newClaim = new Claim(subSystem.Name, operation.Name + "-" + "True"); 
-                        roleManager.AddClaimAsync(superAdminRole, newClaim);
+                        var newClaim = new Claim(subSystem.Name, operation.Name + "-" + "True");
+                        await roleManager.AddClaimAsync(superAdminRole, newClaim);
                     }
                 }
             }
         }
 
-        public static void SeedUsers(UserManager<ApplicationUser> userManager)
+        public static async Task SeedUsers(UserManager<ApplicationUser> userManager)
         {
-            if (userManager.FindByEmailAsync("super@calenipractice.co.za").Result == null)
+            var userExists = await userManager.FindByEmailAsync("super@calenipractice.co.za");
+            if (userExists == null)
             {
                 var user = new ApplicationUser()
                 {
@@ -53,15 +56,15 @@ namespace INF_370.Group._25.ASP.NET.Core.API
                     IsActive = true
                 };
 
-                var result = userManager.CreateAsync(user, "Caleni12345!").Result;
+                var result = await userManager.CreateAsync(user, "Caleni12345!");
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "SuperAdmin").Wait();
+                    await userManager.AddToRoleAsync(user, "SuperAdmin");
                 }
             }
         }
 
-        
+
     }
 }
