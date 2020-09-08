@@ -1,13 +1,16 @@
-﻿using _25.Core.System;
+﻿using System.Collections.Generic;
+using System.Linq;
+using _25.Core.System;
 using _25.Core.User;
 using _25.Data.Context;
 using _25.Services.Extensions.System;
 using _25.Services.Resources.User;
 using _25.Services.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace _25.Services.Services.Implementations
 {
-    public class UserService:IUserService
+    public class UserService : IUserService
     {
         private readonly ApplicationDbContext _context;
 
@@ -70,8 +73,24 @@ namespace _25.Services.Services.Implementations
                 _context.SaveChanges();
             }
 
-            AuditLogExtenstion.LogActivity("Super Admin", SupportedLogOperation.Create,"Create a new Psychologist");
+            AuditLogExtenstion.LogActivity("Super Admin", SupportedLogOperation.Create, "Create a new Psychologist");
             return newPsychologist;
+        }
+
+        public List<GetPsychologistResource> GetPsychologists()
+        {
+
+            var psychologists = _context.Psychologists
+                .Select(item => new GetPsychologistResource
+                {
+                    Id = item.PsychologistId,
+                    FullName = item.FullName,
+                    PracticeNo = item.PracticeNo,
+                    HPCSANo = item.HPCSANo,
+                    PracticeTitle = item.PracticeTitle
+
+                }).AsNoTracking().ToList();
+            return psychologists;
         }
     }
 }
