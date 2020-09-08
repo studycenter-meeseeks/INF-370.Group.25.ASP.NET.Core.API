@@ -2,7 +2,7 @@
 
 namespace _25.Services.Resources.User
 {
-    public class RegisterUserResource
+    public class RegisterPatientResource
     {
         [Required]
         public string Name { get; set; }

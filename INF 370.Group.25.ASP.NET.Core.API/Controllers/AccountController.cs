@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using _25.Communication;
 using _25.Data.Context;
 using _25.Data.Entities;
 using _25.Services.Extensions.System;
@@ -13,6 +14,8 @@ using _25.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
 {
@@ -24,23 +27,26 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
 
         public AccountController(
             ApplicationDbContext dbContext,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IUserService userService
+            IUserService userService,
+            IConfiguration configuration 
             )
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _roleManager = roleManager;
             _userService = userService;
+            _configuration = configuration;
         }
 
-        [HttpPost("Patient/SignUp")]
+        [HttpPost("Patient/Register")]
         [AllowAnonymous]
-        public async Task<ActionResult> RegisterPatient([FromBody] RegisterUserResource model)
+        public async Task<ActionResult> RegisterPatient([FromBody] RegisterPatientResource model)
         {
             var message = "";
             if (ModelState.IsValid)
@@ -61,14 +67,6 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
                     return BadRequest(new { message });
                 }
 
-                var employeeWithContactNumberExists = _dbContext.Employees.Any(item => item.ContactNumber.Equals(model.ContactNumber));
-
-                if (employeeWithContactNumberExists)
-                {
-                    message = "An account with  the provided cell phone number already exist.";
-                    return BadRequest(new { message });
-                }
-
                 var newUser = new ApplicationUser()
                 {
                     UserName = model.Email,
@@ -79,17 +77,18 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
                 var result = await _userManager.CreateAsync(newUser, model.Password);
                 if (result.Succeeded)
                 {
-                    //await _userManager.AddToRoleAsync(newUser, "User");
-                    //var created = _userService.RegisterUser(model, assignedNumber);
+                    var role = await _roleManager.FindByNameAsync("Patient".ToLower());
+                    await _userManager.AddToRoleAsync(newUser, role.Name);
 
                     //var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
                     //var code = HttpUtility.UrlEncode(emailToken);
-                    //var confirmLink = "https://api.studycenter.co.za/api/v2/account/confirmemail?userId=" + newUser.Id + "&token=" + code;
+                    //var confirmLink = "https://hotsting_domain/api/account/confirmemail?userId=" + newUser.Id + "&token=" + code;
                     //Email.SendAccountConfirmationEmail(newUser.Email, newUser.UserName, confirmLink);
-                    //NotificationExtenstion.NewUserAlert();
 
-                    //var token = GenerateJwtToken(newUser);
-                    //return Ok(new { token });
+                    NotificationExtension.NewPatientAlert(newUser);
+
+                    var token = GenerateJwtToken(newUser, role.Name);
+                    return Ok(new { token });
 
                 }
                 message = "Something went wrong. Please try again.";
@@ -217,5 +216,31 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
 
 
         }
+
+        private object GenerateJwtToken(ApplicationUser user,string userRole)
+        {
+
+            
+            var claims = new List<Claim>
+            {
+                new Claim("UserName",user.UserName),
+                new Claim("UserType",userRole),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
+
+            var token = new JwtSecurityToken(
+                _configuration["JwtIssuer"],
+                _configuration["JwtIssuer"],
+                claims,
+                expires: expires,
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using _25.Communication;
 using _25.Core.System;
 using _25.Data.Context;
+using _25.Data.Entities;
 
 namespace _25.Services.Extensions.System
 {
@@ -51,12 +52,33 @@ namespace _25.Services.Extensions.System
 
             var SMSTextToSuperAdmin = "Psychologist Email Resent";
 
-            AuditLogExtenstion.LogActivity("Admin Level", SupportedLogOperation.Create, "Resend psychologist email");
+            AuditLogExtenstion.LogActivity("System", SupportedLogOperation.Create, "Resend psychologist email");
             Email.SendNewAccountEmail(toPsychologist.EmailAddress, toPsychologist.FullName, htmlMessageToPsychologist, planTextMessage);
             SMS.NotifyAdminAboutNewBooking(SMSTextToSuperAdmin);
 
 
 
+        }
+
+        public static void NewPatientAlert(ApplicationUser user)
+        {
+
+            var emailTo = "mankgwanyane@tlaka.xyz";
+            var emailName = "Mankgwanyane";
+            var htmlMessageToPsychologist = @"Hello! New Patient has started the account creation process, Here are their details: <br/><br/>"
+                                            + "Email: " + user.Email + "<br/><br/>" + "Cellphone Number: " + user.PhoneNumber +
+                                            " <br/><br/> " +
+                                            "Thanks,<br/>" +
+                                            "The Caleni Practice System";
+
+            var planTextMessage = " New Patient has started the account creation process, Here are their details: "
+                                  + "Email: " + user.Email +" Cellphone Number: " + user.PhoneNumber;
+
+            var SMSTextToSuperAdmin = "New patient has started the account creation process.";
+
+            AuditLogExtenstion.LogActivity("System", SupportedLogOperation.Create, "New patient has started the account creation process.");
+            Email.SendNewAccountEmail(emailTo, emailName, htmlMessageToPsychologist, planTextMessage);
+            SMS.NotifyAdminAboutNewBooking(SMSTextToSuperAdmin);
         }
     }
 }
