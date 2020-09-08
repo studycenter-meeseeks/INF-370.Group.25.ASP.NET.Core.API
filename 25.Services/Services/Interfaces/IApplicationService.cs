@@ -8,6 +8,8 @@ namespace _25.Services.Services.Interfaces
     {
          List<GetGenericNameAndIdResource> GetAllSubSystems();
          List<GetGenericNameAndIdResource> GetAllOperations();
+         List<GetGenericNameAndIdResource> GetAllTitles();
+         List<GetGenericNameAndIdResource> GetAllGenders();
 
          Centre AddCentre(CreateCentreResource resource);
          List<GetCentreResource> GetAlLCentres();

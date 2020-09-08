@@ -34,6 +34,18 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
             _context = context;
         }
 
+        [HttpGet("Genders/GetAll")]
+        public ActionResult<IEnumerable<GetGenericNameAndIdResource>> GetGenders()
+        {
+            return _applicationService.GetAllGenders();
+        }
+
+        [HttpGet("Titles/GetAll")]
+        public ActionResult<IEnumerable<GetGenericNameAndIdResource>> GetTitles()
+        {
+            return _applicationService.GetAllTitles();
+        }
+
         [HttpGet("Roles/GetAll")]
         public async Task<ActionResult<IEnumerable<RolePrivilegesResource>>> GetRoles()
         {
@@ -160,6 +172,8 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
         {
             return _applicationService.GetAlLCentres();
         }
+
+
 
     }
 }

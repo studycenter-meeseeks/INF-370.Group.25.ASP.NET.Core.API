@@ -20,7 +20,6 @@ namespace _25.Core.User
         public string PracticeTitle { get; set; }
         [Required]
         public string WorkContactNumber { get; set; }
-        [Required]
         public string CellContactNumber { get; set; }
         [Required]
         public string EmailAddress { get; set; }

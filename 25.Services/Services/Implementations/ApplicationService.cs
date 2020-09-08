@@ -40,6 +40,28 @@ namespace _25.Services.Services.Implementations
             return operations;
         }
 
+        public List<GetGenericNameAndIdResource> GetAllTitles()
+        {
+            var titles = _context.Titles.Select(item => new GetGenericNameAndIdResource
+            {
+                Id = item.TitleId,
+                Name = item.Name
+            }).AsNoTracking().ToList();
+
+            return titles;
+        }
+
+        public List<GetGenericNameAndIdResource> GetAllGenders()
+        {
+            var genders = _context.Genders.Select(item => new GetGenericNameAndIdResource
+            {
+                Id = item.GenderId,
+                Name = item.Name
+            }).AsNoTracking().ToList();
+
+            return genders;
+        }
+
         public Centre AddCentre(CreateCentreResource resource)
         {
 
