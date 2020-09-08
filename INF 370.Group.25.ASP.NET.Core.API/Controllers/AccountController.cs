@@ -159,6 +159,14 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
             return BadRequest(new { message });
         }
 
+        [HttpGet("Psychologist/ResentAccountCreated/{psychologistId}")]
+        public IActionResult ResendAccountCreatedEmailToPsychologist(int psychologistId)
+        {
+           
+                NotificationExtension.ResentAddPsychologistNotification(psychologistId);
+                return Ok();
+
+        }
 
         public static string GenerateRandomPassword(PasswordOptions opts = null)
         {

@@ -6,7 +6,8 @@ namespace _25.Communication
 {
     public static class Email
     {
-        private const string ApiKey = "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";
+        //private const string ApiKey = "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";
+        private const string ApiKey = "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";
 
         private static async Task ConfirmEmailTask(string toEmail, string toName, string confirmationLink)
         {
