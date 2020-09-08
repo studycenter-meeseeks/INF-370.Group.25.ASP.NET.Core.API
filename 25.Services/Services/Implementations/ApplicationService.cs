@@ -99,12 +99,12 @@ namespace _25.Services.Services.Implementations
                     Name = item.Name,
                     Location = item.Address.CityOrTown,
                     EmployeesCount = item.Employees.Count,
-                    PsychologistsCount = item.Psychologists.FindAll(psychologistCentre=> psychologistCentre.CentreId == item.CentreId).Count,
+                    PsychologistsCount = item.Psychologists.Where(psychologistCentre=> psychologistCentre.CentreId == item.CentreId).ToList().Count,
                     AddressLine1 = item.Address.Line1,
                     AddressLine2 = item.Address.Line2,
                     AddressCityOrTown = item.Address.CityOrTown,
                     Province = item.Address.Province,
-                    PostalCode = item.Address.ZipCode,
+                    PostalCode = item.Address.ZipCode
 
                 })
                 .AsNoTracking().ToList();

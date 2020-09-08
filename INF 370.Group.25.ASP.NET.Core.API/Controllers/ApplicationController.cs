@@ -102,7 +102,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
             {
                 var newRole = new IdentityRole
                 {
-                    Name = model.RoleName
+                    Name = model.RoleName.ToLower()
                 };
 
                 await _roleManager.CreateAsync(newRole);
@@ -115,21 +115,21 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
                 {
                     foreach (var privilege in model.Privileges)
                     {
-                        if (privilege.SubSystem.ToLower().Equals(subSystem.Name))
+                        if (privilege.SubSystem.ToLower().Equals(subSystem.Name.ToLower()))
                         {
                             foreach (var operation in operations)
                             {
-                                if (privilege.Operation.ToLower().Equals(operation.Name))
+                                if (privilege.Operation.ToLower().Equals(operation.Name.ToLower()))
                                 {
                                     //Selected
-                                    var claim = new Claim(privilege.SubSystem, privilege.Operation + "-" + "True");
+                                    var claim = new Claim(privilege.SubSystem.ToLower(), privilege.Operation.ToLower() + "-" + "True".ToLower());
                                     await _roleManager.AddClaimAsync(role, claim);
 
                                 }
                                 else
                                 {
                                     //Not Selected
-                                    var claim = new Claim(privilege.SubSystem, privilege.Operation + "-" + "False");
+                                    var claim = new Claim(privilege.SubSystem.ToLower(), privilege.Operation.ToLower() + "-" + "False".ToLower());
                                     await _roleManager.AddClaimAsync(role, claim);
                                 }
                             }

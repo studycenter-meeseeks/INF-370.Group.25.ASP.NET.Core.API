@@ -20,10 +20,10 @@ namespace INF_370.Group._25.ASP.NET.Core.API
 
         public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            var roleExist = await roleManager.RoleExistsAsync("SuperAdmin");
+            var roleExist = await roleManager.RoleExistsAsync("SuperAdmin".ToLower());
             if (!roleExist)
             {
-                var role = new IdentityRole { Name = "SuperAdmin" };
+                var role = new IdentityRole { Name = "SuperAdmin".ToLower() };
                 var roleResult = await roleManager.CreateAsync(role);
 
                 var dbContext = new ApplicationDbContext();
@@ -37,7 +37,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API
                     foreach (var operation in operations)
                     {
                         // Bad memory management, please change when possible
-                        var newClaim = new Claim(subSystem.Name, operation.Name + "-" + "True");
+                        var newClaim = new Claim(subSystem.Name.ToLower(), operation.Name.ToLower() + "-" + "True".ToLower());
                         await roleManager.AddClaimAsync(superAdminRole, newClaim);
                     }
                 }

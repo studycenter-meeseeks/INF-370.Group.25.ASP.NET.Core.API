@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using _25.Data.Context;
 using _25.Data.Entities;
 using _25.Services.Services.Implementations;
@@ -11,13 +8,10 @@ using _25.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace INF_370.Group._25.ASP.NET.Core.API
@@ -51,7 +45,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API
             services.AddDbContext<ApplicationDbContext>();
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
-                    options.SignIn.RequireConfirmedEmail = true;
+                    options.SignIn.RequireConfirmedEmail = false;
                     options.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -91,6 +85,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API
             // ===== Link Business Services ========
 
             services.AddScoped<IApplicationService, ApplicationService>();
+            services.AddScoped<IUserService, UserService>();
 
         }
 

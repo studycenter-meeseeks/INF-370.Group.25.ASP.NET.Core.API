@@ -5,6 +5,6 @@ namespace _25.Services.Services.Interfaces
 {
     public interface IUserService
     {
-        Psychologist AddPsychologist(CreatePsychologistResource resource);
+        Psychologist AddPsychologist(CreatePsychologistResource resource, string generatedPassword);
     }
 }

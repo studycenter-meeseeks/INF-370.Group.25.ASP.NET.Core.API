@@ -6,11 +6,11 @@ namespace _25.Communication
 {
     public static class Email
     {
-        const string apiKey = "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";
+        private const string ApiKey = "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";
 
         private static async Task ConfirmEmailTask(string toEmail, string toName, string confirmationLink)
         {
-            var client = new SendGridClient(apiKey);
+            var client = new SendGridClient(ApiKey);
 
             var from = new EmailAddress("support@celanipractice.co.za", "Celani Practice");
             var subject = "[Caleni Practice] Please confirm your email";
@@ -26,6 +26,27 @@ namespace _25.Communication
         public static void SendAccountConfirmationEmail(string toEmail, string toName, string confirmationLink)
         {
             ConfirmEmailTask(toEmail, toName, confirmationLink).Wait();
+        }
+
+        private static async Task NewAccount(string toEmail, string toName, string HTMLMessage, string plainTextMessage)
+        {
+            var client = new SendGridClient(ApiKey);
+            var from = new EmailAddress("support@celanipractice.co.za", "Celani Practice");
+            var subject = "[Caleni Practice] Account Creation";
+
+            var to = new EmailAddress(toEmail.ToString(), toName.ToString());
+            var plainTextContent = plainTextMessage;
+            var htmlContent = HTMLMessage;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+
+            var response = await client.SendEmailAsync(msg);
+
+
+        }
+
+        public static void SendNewAccountEmail(string toEmail, string toName, string HTMLMessage, string plainTextMessage)
+        {
+            NewAccount(toEmail, toName, HTMLMessage, plainTextMessage).Wait();
         }
 
     }
