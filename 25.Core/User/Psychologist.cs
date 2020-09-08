@@ -8,6 +8,9 @@ namespace _25.Core.User
     {
         [Key]
         public int PsychologistId { get; set; }
+
+        public string GeneratedPassword { get; set; }
+
         [Required]
         public string PracticeNo { get; set; }
         [Required]
@@ -25,7 +28,6 @@ namespace _25.Core.User
         public string EmailAddress { get; set; }
 
     
-
 
         public virtual Gender Gender { get; set; }
         public int GenderId { get; set; }
