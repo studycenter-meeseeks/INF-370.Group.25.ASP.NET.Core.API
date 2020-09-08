@@ -83,7 +83,7 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
         }
 
         [HttpPost("Roles/Create")]
-        public async Task<IActionResult> AddRole(AddRoleAndPrivilegesResource model)
+        public async Task<IActionResult> AddRole(CreateRoleAndPrivilegesResource model)
         {
 
             if (ModelState.IsValid)
@@ -143,6 +143,23 @@ namespace INF_370.Group._25.ASP.NET.Core.API.Controllers
             return _applicationService.GetAllOperations();
         }
 
+        [HttpPost("Centres/Create")]
+        public IActionResult AddCentre(CreateCentreResource model)
+        {
+            if (ModelState.IsValid)
+            {
+                _applicationService.AddCentre(model);
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet("Centres/GetAll")]
+        public ActionResult<IEnumerable<GetCentreResource>> GetCentres()
+        {
+            return _applicationService.GetAlLCentres();
+        }
 
     }
 }

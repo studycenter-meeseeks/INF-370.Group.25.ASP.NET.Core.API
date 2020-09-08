@@ -2,7 +2,7 @@
 
 namespace _25.Services.Resources.Application
 {
-    public class AddRoleAndPrivilegesResource
+    public class CreateRoleAndPrivilegesResource
     {
         public string RoleName { get; set; }
 
