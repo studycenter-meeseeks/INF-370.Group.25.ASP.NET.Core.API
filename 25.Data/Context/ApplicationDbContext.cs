@@ -14,7 +14,15 @@ namespace _25.Data.Context
             base.OnConfiguring(optionsBuilder);
         }
 
-        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<PsychologistCentre>()
+                .HasKey(item => new { item.CentreId, item.PsychologistId });
+
+            base.OnModelCreating(builder);
+        }
+
+
         //User DbSets
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeType> EmployeeTypes { get; set; }
@@ -30,6 +38,7 @@ namespace _25.Data.Context
         public DbSet<Psychologist> Psychologists { get; set; }
         public DbSet<PsychologistQualification> PsychologistQualifications { get; set; }
         public DbSet<PsychologistService> PsychologistServices { get; set; }
+        public DbSet<PsychologistCentre> PsychologistCentres { get; set; }
 
         //System
         public DbSet<AuditLog> AuditLogs { get; set; }
@@ -41,6 +50,6 @@ namespace _25.Data.Context
         public DbSet<CentreAddress> CentreAddresses { get; set; }
 
         //Identity
-     
+
     }
 }

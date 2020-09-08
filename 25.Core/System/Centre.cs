@@ -14,12 +14,12 @@ namespace _25.Core.System
 
         public virtual CentreAddress Address { get; set; }
 
-        public virtual List<Psychologist> Psychologists { get; set; }
+        public virtual List<PsychologistCentre> Psychologists { get; set; }
         public virtual List<Employee> Employees { get; set; }
 
         public Centre()
         {
-            Psychologists = new List<Psychologist>();
+            Psychologists = new List<PsychologistCentre>();
             Employees = new List<Employee>();
         }
 

@@ -91,13 +91,15 @@ namespace _25.Services.Services.Implementations
         public List<GetCentreResource> GetAlLCentres()
         {
             var centres = _context.Centres
+                .Include(item=>item.Psychologists)
+                .Include(item=>item.Employees)
                 .Select(item => new GetCentreResource
                 {
                     Id = item.CentreId,
                     Name = item.Name,
                     Location = item.Address.CityOrTown,
                     EmployeesCount = item.Employees.Count,
-                    PsychologistsCount = item.Psychologists.Count,
+                    PsychologistsCount = item.Psychologists.FindAll(psychologistCentre=> psychologistCentre.CentreId == item.CentreId).Count,
                     AddressLine1 = item.Address.Line1,
                     AddressLine2 = item.Address.Line2,
                     AddressCityOrTown = item.Address.CityOrTown,

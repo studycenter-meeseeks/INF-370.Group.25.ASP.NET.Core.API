@@ -24,8 +24,9 @@ namespace _25.Core.User
         [Required]
         public string EmailAddress { get; set; }
 
-        public virtual Centre Centre { get; set; }
-        public int CentreId { get; set; }
+    
+
+
         public virtual Gender Gender { get; set; }
         public int GenderId { get; set; }
         public virtual Title Title { get; set; }
@@ -33,11 +34,13 @@ namespace _25.Core.User
 
         public virtual List<PsychologistQualification> Qualifications { get; set; }
         public virtual List<PsychologistService> Services { get; set; }
+        public virtual List<PsychologistCentre> Centres { get; set; }
 
         public Psychologist()
         {
             Qualifications =new List<PsychologistQualification>();
             Services = new List<PsychologistService>();
+            Centres = new List<PsychologistCentre>();
         }
 
     }
